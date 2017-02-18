@@ -16,14 +16,18 @@ export class ChatComponent implements OnInit, OnDestroy {
   constructor(private chatService: ChatService) {
     this.messages = [];
     this.message = {
-      author: 'morebug',
+      author: '...',
       type: MessageType.sent,
       time: new Date(),
       content: '',
     };
+
   }
 
   ngOnInit() {
+    const nickObservable = this.chatService.connect();
+    nickObservable.subscribe((name: string) => this.message.author = name);
+
     this.connection = this.chatService.getMessage().subscribe((message: Message) => {
       this.messages.push(message);
     });

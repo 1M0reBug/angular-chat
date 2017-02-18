@@ -14,9 +14,20 @@ export class ChatService {
     this.socket.emit('add-message', message);
   }
 
-  getMessage() {
+  connect() {
     const observable = new Observable(observer => {
       this.socket = io(this.url);
+      this.socket.on('name', name => {
+        observer.next(name.name);
+        observer.unsubscribe();
+      });
+    });
+
+    return observable;
+  }
+
+  getMessage() {
+    const observable = new Observable(observer => {
       this.socket.on('message', data => {
         data.type = MessageType.received;
         console.log('data');
