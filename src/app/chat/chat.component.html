@@ -1,15 +1,38 @@
-<app-userlist [author]="message.author" [users]="userList"></app-userlist>
-<app-username [initialName]="message.author" (changedName)="changedName($event)"></app-username>
+<div class="chat-container">
+  <nav>
+    <app-username [initialName]="message.author"
+                  (changedName)="changedName($event)">
+    </app-username>
+  </nav>
 
-<div>status: {{ message.author !== '...' ? 'Connected' : 'Disconnected' }}</div>
-<div id="messages-container">
-  <div *ngFor="let m of messages" class="message"
-       [ngClass]="m.class">
-    ({{m.time | date:'HH:mm:ss'}}) <strong>{{m.author}}</strong>: {{m.content}}
+
+  <div class="row">
+    <div class="one-third">
+      <app-userlist [author]="message.author" [users]="userList"></app-userlist>
+    </div>
+
+    <div class="chat-page two-thirds">
+      <div class="messages-container">
+        <div *ngFor="let m of messages" class="message"
+             [ngClass]="m.class">
+          <div class="flex-row">
+            <div class="flex-column">
+              <div class="author">{{ m.author }}</div>
+              <div class="content">{{ m.content }}</div>
+            </div>
+            <div class="date">{{ m.time | date:'HH:mm:ss' }}</div>
+          </div>
+        </div>
+      </div>
+      <form (ngSubmit)="pushMessage(message)" class="messagebox-form row">
+        <div class="two-thirds">
+          <input mdInput [(ngModel)]="message.content" type="text"
+                 id="message-to-send" name="message" autocomplete="off">
+        </div>
+        <div class="one-third">
+          <button>Send</button>
+        </div>
+      </form>
+    </div>
   </div>
 </div>
-<form (ngSubmit)="pushMessage(message)" class="messagebox">
-  <input [(ngModel)]="message.content" type="text"
-         id="message-to-send" name="message" autocomplete="off">
-  <input type="submit" value="Send">
-</form>

@@ -1,6 +1,6 @@
 {
-  "name": "idt-messaging",
-  "version": "0.0.0",
+  "name": "idt-messaging-client",
+  "version": "0.0.1",
   "license": "MIT",
   "angular-cli": {},
   "scripts": {
@@ -25,6 +25,7 @@
     "core-js": "^2.4.1",
     "moment": "^2.17.1",
     "rxjs": "^5.1.0",
+    "skeleton-css": "^2.0.4",
     "socket.io-client": "^1.7.3",
     "zone.js": "^0.7.6"
   },
