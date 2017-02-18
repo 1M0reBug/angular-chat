@@ -18,7 +18,7 @@ export class ChatService {
     const observable = new Observable(observer => {
       this.socket = io(this.url);
       this.socket.on('name', name => {
-        observer.next(name.name);
+        observer.next(name);
         observer.complete();
       });
     });

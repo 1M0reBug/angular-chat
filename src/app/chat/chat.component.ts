@@ -11,6 +11,7 @@ export class ChatComponent implements OnInit, OnDestroy {
 
   private messages: Array<Message>;
   private message: Message;
+  private userList: Array<string>;
 
   constructor(private chatService: ChatService) {
     this.messages = [];
@@ -24,7 +25,10 @@ export class ChatComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     const nickObservable = this.chatService.connect();
-    nickObservable.subscribe((name: string) => this.message.author = name);
+    nickObservable.subscribe((data: any) => {
+      this.message.author = data.name;
+      this.userList = data.userList;
+    });
 
     this.chatService.getMessage().subscribe((message: Message) => {
       this.messages.push(message);
@@ -38,8 +42,10 @@ export class ChatComponent implements OnInit, OnDestroy {
     this.chatService.getUsersState().subscribe((state: UserState) => {
       let content = '';
       if (state.type === MessageType.newUser) {
+        this.userList.push(state.name);
         content = `${state.name} just joined`;
       } else if (state.type === MessageType.disconnectedUser) {
+        this.userList = this.userList.filter(u => u !== state.name);
         content = `${state.name} leaved the chat`;
       }
 
@@ -49,26 +55,35 @@ export class ChatComponent implements OnInit, OnDestroy {
         class: 'notification'
       };
 
-      this.pushMessage(message);
+      this.displayMessage(message);
     });
   }
 
   pushMessage(message) {
+    try {
+      const prepMessage = this.displayMessage(message);
+      this.chatService.sendMessage(prepMessage);
+    } catch(e) {
+      console.error(e.message);
+    }
+  }
+
+  displayMessage(message) {
     if (message.content === '') {
-      console.error('Cannot send empty message');
-      return;
+      throw new Error('Cannot send empty message');
     }
 
     if (!message.class) {
       message.class = message.type === MessageType.received
-                    ? 'received'
-                    : 'sent';
+        ? 'received'
+        : 'sent';
     }
     message.time = new Date();
     const messageCopy : Message = Object.assign({}, message);
     this.messages.push(messageCopy);
-    this.chatService.sendMessage(messageCopy);
     this.message.content = '';
+
+    return messageCopy;
   }
 
 

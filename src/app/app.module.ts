@@ -6,10 +6,12 @@ import { HttpModule } from '@angular/http';
 import { AppComponent } from './app.component';
 import { ChatComponent } from './chat/chat.component';
 import { ChatService } from './chat.service';
+import { UserlistComponent } from './userlist/userlist.component';
 @NgModule({
   declarations: [
     AppComponent,
-    ChatComponent
+    ChatComponent,
+    UserlistComponent
   ],
   imports: [
     BrowserModule,
