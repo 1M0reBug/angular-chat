@@ -1,0 +1,12 @@
+<p *ngIf="!isEditing" (click)="isEditing = true">
+  {{ name }} <button (click)="isEditing = true">✎</button>
+</p>
+<form *ngIf="isEditing" (ngSubmit)="onSubmit()">
+  <input type="text"
+         name="newName"
+         pattern="[a-zA-Z0-9-\ ]+"
+         (blur)="isEditing = false"
+         [(ngModel)]="newName"
+         [autofocus]="true">
+  <!-- button (click)="isEditing = false">x</button -->
+</form>

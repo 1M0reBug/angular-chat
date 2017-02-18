@@ -1,5 +1,6 @@
 <app-userlist [author]="message.author" [users]="userList"></app-userlist>
-<div>{{ message.author }}</div>
+<app-username [initialName]="message.author" (changedName)="changedName($event)"></app-username>
+
 <div>status: {{ message.author !== '...' ? 'Connected' : 'Disconnected' }}</div>
 <div id="messages-container">
   <div *ngFor="let m of messages" class="message"

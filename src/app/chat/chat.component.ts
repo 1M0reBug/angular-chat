@@ -37,6 +37,7 @@ export class ChatComponent implements OnInit, OnDestroy {
     interface UserState {
       type: MessageType,
       name: string,
+      oldName?: string,
     }
 
     this.chatService.getUsersState().subscribe((state: UserState) => {
@@ -47,6 +48,9 @@ export class ChatComponent implements OnInit, OnDestroy {
       } else if (state.type === MessageType.disconnectedUser) {
         this.userList = this.userList.filter(u => u !== state.name);
         content = `${state.name} leaved the chat`;
+      } else if (state.type === MessageType.renamedUser) {
+        this.renameUserInList(state.oldName, state.name);
+        content = `${state.oldName} is now known as ${state.name}`;
       }
 
       const message: Message = {
@@ -84,6 +88,18 @@ export class ChatComponent implements OnInit, OnDestroy {
     this.message.content = '';
 
     return messageCopy;
+  }
+
+  changedName(name) {
+    console.log('changedName');
+    this.chatService.setUsername(name);
+    this.renameUserInList(this.message.author, name);
+    this.message.author = name;
+  }
+
+  renameUserInList(oldName, newName) {
+    const idx = this.userList.indexOf(oldName);
+    this.userList[idx] = newName;
   }
 
 

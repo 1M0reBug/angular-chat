@@ -2,7 +2,8 @@ export enum MessageType {
   sent,
   received,
   newUser,
-  disconnectedUser
+  disconnectedUser,
+  renamedUser,
 }
 
 export interface Message {

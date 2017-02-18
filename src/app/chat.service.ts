@@ -46,9 +46,17 @@ export class ChatService {
       this.socket.on('disconnect-user', username => {
         observer.next({ type: MessageType.disconnectedUser, name: username.name });
       });
+
+      this.socket.on('renamed-user', names => {
+        observer.next({ type: MessageType.renamedUser, name: names.name, oldName: names.oldName })
+      })
     });
 
     return observable;
+  }
+
+  setUsername(newName) {
+    this.socket.emit('rename', newName);
   }
 
   disconnect() {
