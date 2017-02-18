@@ -1,0 +1,22 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.messagebox {
+  position: fixed;
+  bottom: 45%;
+  width: 100%;
+}
+
+.messagebox input {
+  width: 90%;
+  margin-right: .5%;
+}
+
+.messagebox input[type="submit"] {
+  width: 8%;
+  padding: 0;
+  display: inline-block;
+}
