@@ -19,7 +19,7 @@ export class ChatService {
       this.socket = io(this.url);
       this.socket.on('name', name => {
         observer.next(name.name);
-        observer.unsubscribe();
+        observer.complete();
       });
     });
 
@@ -30,13 +30,28 @@ export class ChatService {
     const observable = new Observable(observer => {
       this.socket.on('message', data => {
         data.type = MessageType.received;
-        console.log('data');
         observer.next(data as Message);
       });
-
-      return () => this.socket.disconnect()
     });
 
     return observable;
+  }
+
+  getUsersState() {
+    const observable = new Observable(observer => {
+      this.socket.on('new-user', username => {
+        observer.next({ type: MessageType.newUser, name: username.name });
+      });
+
+      this.socket.on('disconnect-user', username => {
+        observer.next({ type: MessageType.disconnectedUser, name: username.name });
+      });
+    });
+
+    return observable;
+  }
+
+  disconnect() {
+    this.socket.disconnect();
   }
 }

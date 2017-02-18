@@ -4,6 +4,11 @@
   box-sizing: border-box;
 }
 
+.notification {
+  text-align: center;
+  font-style: italic;
+}
+
 .messagebox {
   position: fixed;
   bottom: 45%;

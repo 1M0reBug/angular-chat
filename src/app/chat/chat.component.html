@@ -2,7 +2,7 @@
 <div>status: {{ message.author !== '...' ? 'Connected' : 'Disconnected' }}</div>
 <div id="messages-container">
   <div *ngFor="let m of messages" class="message"
-       [class]="m.type === received ? received : sent">
+       [ngClass]="m.class">
     ({{m.time | date:'HH:mm:ss'}}) <strong>{{m.author}}</strong>: {{m.content}}
   </div>
 </div>
