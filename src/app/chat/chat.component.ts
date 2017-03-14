@@ -1,6 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Message, MessageType } from '../message';
+import { UserState } from '../user-state';
 import { ChatService } from '../chat.service';
+import { buildMessageStrategy } from '../message-strategy';
 
 @Component({
   selector: 'app-chat',
@@ -34,31 +36,10 @@ export class ChatComponent implements OnInit, OnDestroy {
       this.messages.push(message);
     });
 
-    interface UserState {
-      type: MessageType,
-      name: string,
-      oldName?: string,
-    }
-
     this.chatService.getUsersState().subscribe((state: UserState) => {
-      let content = '';
-      if (state.type === MessageType.newUser) {
-        this.userList.push(state.name);
-        content = `${state.name} just joined`;
-      } else if (state.type === MessageType.disconnectedUser) {
-        this.userList = this.userList.filter(u => u !== state.name);
-        content = `${state.name} leaved the chat`;
-      } else if (state.type === MessageType.renamedUser) {
-        this.renameUserInList(state.oldName, state.name);
-        content = `${state.oldName} is now known as ${state.name}`;
-      }
-
-      const message: Message = {
-        content,
-        type: state.type,
-        class: 'notification'
-      };
-
+      const data = buildMessageStrategy(this.userList, state);
+      this.userList = data.userList;
+      const message = data.message as Message;
       this.displayMessage(message);
     });
   }

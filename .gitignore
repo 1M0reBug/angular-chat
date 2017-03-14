@@ -2,6 +2,7 @@
 
 # compiled output
 /tmp
+/dist
 
 # dependencies
 /node_modules
@@ -29,6 +30,7 @@
 /libpeerconnection.log
 npm-debug.log
 testem.log
+yarn-error.log
 /typings
 
 # e2e
