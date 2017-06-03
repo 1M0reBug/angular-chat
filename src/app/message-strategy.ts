@@ -45,8 +45,34 @@ class RenamedUserStrategy extends AbstractMessageTypeStrategy {
   }
 }
 
+class EnumExtension {
+  static values(e): Array<string | number> {
+    return Object.keys(e).map(k => e[k]);
+  }
+
+  static names(e): Array<string> {
+    return EnumExtension.values(e)
+            .filter(v => typeof v === 'string') as Array<string>;
+  }
+
+  static int(e): Array<number> {
+    return EnumExtension.values(e)
+      .filter(v => typeof v === 'number') as Array<number>;
+  }
+
+  static obj<T extends number>(e) {
+    return EnumExtension.names(e).map(n => ({ name: n, value: e[n] as T }));
+  }
+
+}
+
 function strategyFactory(userList, state): AbstractMessageTypeStrategy {
   const { type } = state;
+
+  EnumExtension.names(MessageType)
+    .map(n => pascalCase(n)) // FIXME can't find pascalCase
+                             // need to find how to import pascalCase!
+
   if (type === MessageType.disconnectedUser) {
     return new DisconnectedUserStrategy(userList, state);
   } else if (type === MessageType.newUser) {
