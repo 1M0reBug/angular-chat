@@ -6,7 +6,7 @@ and [Angular CLI](https://github.com/angular/angular-cli) version 1.0.0-beta.32.
 
 ## Running the application
 
-The application requires the websocket sever to be running, otherwise, it will fail to start.
+The application requires the [websocket sever](https://github.com/1M0reBug/angular-chat-server) to be running, otherwise, it will fail to start.
 You may refer to the server Readme to know how to launch it (`npm start`).
 
 The best way to run the application is to use the files in the `dist/` folder.
