@@ -1,4 +1,4 @@
-# IdtMessaging-test
+# Angular Chat
 
 This project is an angular application, written using [Typescript](http://www.typescriptlang.org/) version 2.0.0,
 and [Angular CLI](https://github.com/angular/angular-cli) version 1.0.0-beta.32.3.
